@@ -76,7 +76,7 @@ app.post("/login", (request, response) => {
     }
 })
 
-app.put("/register", (request, response) => {
+app.post("/register", (request, response) => {
     var email = request.body.email;
     var password = request.body.password;
     var username = request.body.username;
@@ -84,13 +84,13 @@ app.put("/register", (request, response) => {
     if (email && password && username) {
         User.create({id:uuidv4(), password: password, username: username, email: email }, function (err, user){
            if(err) response.sendStatus(500);
-           else response.sendStatus(200);
+           else response.send(user)
         });
     }
-    if(loginKey && username){
+    else if(loginKey && username){
         User.create({id:uuidv4(), username: username, loginKey: loginKey }, function (err, user){
             if(err) response.sendStatus(500);
-            else response.sendStatus(200);
+            else response.send(user);
         });
     }
     else {
