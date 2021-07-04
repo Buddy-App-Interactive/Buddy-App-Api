@@ -1,11 +1,11 @@
-import mongoose from "mongoose";
-const { Schema } = mongoose;
+const mongoose = require('mongoose');
+const {Schema} = mongoose;
 
 const message = new Schema({
-  id: { type: String },
-  id_chat: { type: String },
-  content: { type: Buffer, default: null },
-  created: { type: Date, default: null },
+  id: {type: String},
+  id_chat: {type: String},
+  content: {type: Buffer, default: null},
+  created: {type: Date, default: null},
 });
 
-export default message;
+module.exports = message;

@@ -1,3 +1,4 @@
-import RequestControler from "./RequestController.js";
+const RequestControler = require('./RequestController.js');
+const AuthController = require('./AuthController.js');
 
-export { RequestControler };
+module.exports = {RequestControler, AuthController};
