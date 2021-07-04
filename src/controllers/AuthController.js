@@ -1,6 +1,6 @@
 const {v4: uuidv4} = require('uuid');
 
-const {User} = require('../Schemas/index.js');
+const { User } = require('../Schemas/index.js');
 const AuthService = require('../services/AuthService.js');
 
 class AuthController {
@@ -12,19 +12,29 @@ class AuthController {
     var email = request.body.email;
     var password = request.body.password;
     var username = request.body.username;
-    var loginKey = request.body.loginKey;
+
     if (email && password && username) {
       User.create(
         {id: uuidv4(), password: password, username: username, email: email},
         function (err, user) {
           if (err) response.sendStatus(500);
-          else response.send(user);
+          else response.send({
+            id: user._id,
+            email: user.email,
+            username: user.username,
+            jwt: AuthService.generateToken(user),
+          });
         }
       );
-    } else if (loginKey && username) {
-      User.create({id: uuidv4(), username: username, loginKey: loginKey}, function (err, user) {
+    } else if (username) {
+      User.create({id: uuidv4(), username: username, loginKey: uuidv4()}, function (err, user) {
         if (err) response.sendStatus(500);
-        else response.send(user);
+        else response.send({
+          id: user._id,
+          loginKey: user.loginKey,
+          username: user.username,
+          jwt: AuthService.generateToken(user),
+        });
       });
     } else {
       response.sendStatus(400);
@@ -61,8 +71,13 @@ class AuthController {
           request.session.loggedin = true;
           request.session.email = '';
           request.session.username = user.username;
-          request.session.id = user.id;
-          response.send(user);
+          request.session.user_id = user.id;
+          response.send({
+            id: user._id,
+            loginKey: user.loginKey,
+            username: user.username,
+            jwt: AuthService.generateToken(user),
+          });
         } else {
           response.sendStatus(404);
         }
