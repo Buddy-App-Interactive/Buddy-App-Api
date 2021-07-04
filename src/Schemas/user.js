@@ -9,4 +9,4 @@ const user = new Schema({
   loginKey: {type: String, default: null},
 });
 
-module.exports = user;
+module.exports = mongoose.model('User', user);
