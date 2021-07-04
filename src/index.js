@@ -32,8 +32,6 @@ app.use(bodyParser.json());
 
 const db = initDb();
 
-console.log(attachCurrentUser);
-
 db.on('error', console.error.bind(console, 'connection error:'));
 
 db.once('open', function () {
@@ -48,5 +46,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('/requests', RequestControler.fetchRequests);
+app.get('/requests/own', RequestControler.fetchOwnRequests);
 app.post('/login', AuthController.login);
 app.post('/register', AuthController.register);

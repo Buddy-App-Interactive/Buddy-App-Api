@@ -9,4 +9,4 @@ const chat = new Schema({
   created: {type: Date, default: null},
 });
 
-module.exports = chat;
+module.exports = mongoose.model('Chat', chat);

@@ -1,6 +1,6 @@
 const {v4: uuidv4} = require('uuid');
 
-const {db, User, Chat, ChatRequest, Message} = require('../DbManager.js');
+const {User} = require('../Schemas/index.js');
 const AuthService = require('../services/AuthService.js');
 
 class AuthController {
@@ -39,9 +39,6 @@ class AuthController {
 
     if (email && password) {
       User.findOne({email: email, password: password}, function (err, user) {
-        console.log(email);
-        console.log(password);
-
         if (user) {
           request.session.loggedin = true;
           request.session.email = email;

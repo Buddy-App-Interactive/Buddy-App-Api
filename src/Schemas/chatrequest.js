@@ -17,4 +17,4 @@ const chatRequest = new Schema({
   limit: {type: Number},
 });
 
-module.exports = chatRequest;
+module.exports = mongoose.model('ChatRequest', chatRequest);
