@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const message = new Schema({
   id: { type: String },
   id_chat: { type: String },
-  content: { type: Blob, default: null },
+  content: { type: Buffer, default: null },
   created: { type: Date, default: null },
 });
 

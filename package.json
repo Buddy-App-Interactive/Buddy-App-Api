@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "The api for the buddy mobile app.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
+    "start": "node ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -18,5 +20,10 @@
     "nodemon": "^2.0.7",
     "socket.io": "^4.0.1",
     "uuid": "^8.3.2"
-  }
+  },
+  "devDependencies": {
+    "prettier": "^2.3.2",
+    "prettier-airbnb-config": "^1.0.0"
+  },
+  "prettier": "prettier-airbnb-config"
 }
