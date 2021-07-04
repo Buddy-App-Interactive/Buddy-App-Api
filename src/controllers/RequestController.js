@@ -4,4 +4,4 @@ class RequestControler {
   createRequest = function (req, res) {};
 }
 
-export default new RequestControler();
+module.exports = new RequestControler();

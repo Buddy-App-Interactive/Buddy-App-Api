@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-import user from './Schemas/user.js';
-import chat from './Schemas/chat.js';
-import chatrequest from './Schemas/chatrequest.js';
-import message from './Schemas/message.js';
+const user = require('./Schemas/user.js');
+const chat = require('./Schemas/chat.js');
+const chatrequest = require('./Schemas/chatrequest.js');
+const message = require('./Schemas/message.js');
 
 let db = undefined;
 let User = undefined;
@@ -26,4 +26,4 @@ function initDb() {
   return db;
 }
 
-export {db, User, Chat, ChatRequest, Message, initDb};
+module.exports = {db, User, Chat, ChatRequest, Message, initDb};

@@ -1,21 +1,19 @@
-import dotenv from 'dotenv';
+const dotenv = require('dotenv');
 dotenv.config();
 
-import {RequestControler, AuthController} from './controllers/index.js';
+const {RequestControler, AuthController} = require('./controllers/index.js');
 
-import AuthService from './services/AuthService.js';
+const AuthService = require('./services/AuthService.js');
 
-import express from 'express';
-import session from 'express-session';
-import bodyParser from 'body-parser';
-import {v4 as uuidv4} from 'uuid';
+const attachCurrentUser = require('./middlewares/attachCurrentUser.js');
+const isAuth = require('./middlewares/isAuth.js');
 
-import user from './Schemas/user.js';
-import chat from './Schemas/chat.js';
-import chatrequest from './Schemas/chatrequest.js';
-import message from './Schemas/message.js';
+const express = require('express');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const {v4: uuidv4} = require('uuid');
 
-import {initDb} from './DbManager.js';
+const {initDb} = require('./DbManager.js');
 
 let app = express();
 
@@ -29,10 +27,12 @@ app.use(
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-import {Server} from 'socket.io';
+//import {Server} from 'socket.io';
 //const io = new Server(app);
 
 const db = initDb();
+
+console.log(attachCurrentUser);
 
 db.on('error', console.error.bind(console, 'connection error:'));
 

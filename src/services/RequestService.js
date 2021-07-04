@@ -1,1 +1,3 @@
-export default class RequestService {}
+class RequestService {}
+
+module.exports = new RequestService();

@@ -1,7 +1,7 @@
-import {v4 as uuidv4} from 'uuid';
+const {v4: uuidv4} = require('uuid');
 
-import {db, User, Chat, ChatRequest, Message} from '../DbManager.js';
-import AuthService from '../services/AuthService.js';
+const {db, User, Chat, ChatRequest, Message} = require('../DbManager.js');
+const AuthService = require('../services/AuthService.js');
 
 class AuthController {
   fetchRequests = function (req, res) {};
@@ -78,4 +78,4 @@ class AuthController {
   }
 }
 
-export default new AuthController();
+module.exports = new AuthController();

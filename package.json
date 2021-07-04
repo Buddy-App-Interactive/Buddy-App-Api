@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "The api for the buddy mobile app.",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start": "node ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,6 +13,7 @@
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-jwt": "^6.0.0",
     "express-session": "^1.17.2",
     "jsonwebtoken": "^8.5.1",
     "migrate-mongo": "^8.2.2",

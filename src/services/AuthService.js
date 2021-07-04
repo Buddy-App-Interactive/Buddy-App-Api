@@ -1,4 +1,4 @@
-import * as jwt from 'jsonwebtoken';
+const jwt = require('jsonwebtoken');
 
 class AuthService {
   generateToken(user) {
@@ -11,8 +11,15 @@ class AuthService {
     const signature = process.env.jwt_signature;
     const expiration = process.env.jwt_expiration;
 
-    return jwt.default.sign({data}, signature, {expiresIn: expiration});
+    return jwt.sign({data}, signature, {expiresIn: expiration});
   }
+
+  // We are assuming that the JWT will come in the header Authorization but it could come in the req.body or in a query param, you have to decide what works best for you.
+  getTokenFromHeader = req => {
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+      return req.headers.authorization.split(' ')[1];
+    }
+  };
 }
 
-export default new AuthService();
+module.exports = new AuthService();
