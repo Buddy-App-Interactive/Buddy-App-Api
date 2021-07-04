@@ -1,10 +1,20 @@
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 
-const { v4: uuidv4 } = require("uuid");
-let express = require("express");
-var session = require("express-session");
-var bodyParser = require("body-parser");
+import { RequestControler } from "./controllers/index.js";
+
+import express from "express";
+import session from "express-session";
+import bodyParser from "body-parser";
+import { v4 as uuidv4 } from "uuid";
+
+import user from "./Schemas/user.js";
+import chat from "./Schemas/chat.js";
+import chatrequest from "./Schemas/chatrequest.js";
+import message from "./Schemas/message.js";
+
 let app = express();
+
 app.use(
   session({
     secret: "asfawe5t43tgru547645",
@@ -14,15 +24,18 @@ app.use(
 );
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-const io = require("socket.io")(80);
 
-const mongoose = require("mongoose");
+import { Server } from "socket.io";
+//const io = new Server(app);
+
+import mongoose from "mongoose";
+
 mongoose.connect(process.env.MONGO_DB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 const db = mongoose.connection;
-const User = mongoose.model("User", require("./Schemas/user"));
+const User = mongoose.model("User", user);
 
 db.on("error", console.error.bind(console, "connection error:"));
 
@@ -37,9 +50,11 @@ app.get("/", (req, res) => {
   res.send("welcome to the buddy app api");
 });
 
+/*
 io.on("connection", (socket) => {
   console.log("request received");
 });
+*/
 
 app.post("/login", (request, response) => {
   var email = request.body.email;
@@ -103,3 +118,5 @@ app.post("/register", (request, response) => {
     response.end();
   }
 });
+
+app.get("/requests", new RequestControler().fetchRequests);

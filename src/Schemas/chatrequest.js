@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 let requestType = {
-  BORED,
-  DEPRESSED,
-  HAPPY,
-  JUSTTALK,
+  BORED: 10,
+  DEPRESSED: 10,
+  HAPPY: 10,
+  JUSTTALK: 10,
 };
 
 const chatRequest = new Schema({

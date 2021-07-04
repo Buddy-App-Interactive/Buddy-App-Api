@@ -9,4 +9,4 @@ const chat = new Schema({
   created: { type: Date, default: null },
 });
 
-export default chatRequest;
+export default chat;
