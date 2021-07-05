@@ -1,6 +1,6 @@
-let Chat = require('./chat.js');
-let ChatRequest = require('./chatrequest.js');
-let Message = require('./message.js');
 let User = require('./user.js');
+let ChatRequest = require('./chatrequest.js');
+let Chat = require('./chat.js');
+let Message = require('./message.js');
 
-module.exports = {Chat, ChatRequest, Message, User};
+module.exports = {User, ChatRequest, Chat, Message};

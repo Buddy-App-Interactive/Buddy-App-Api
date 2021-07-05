@@ -9,7 +9,6 @@ let requestType = {
 };
 
 const chatRequest = new Schema({
-  id: {type: String},
   id_creator: {type: String},
   description: {type: String, default: null},
   type: {type: requestType, default: null},

@@ -1,6 +1,6 @@
 const {User, ChatRequest} = require('../Schemas/index.js');
 
-class RequestControler {
+class RequestController {
   fetchRequests = async (req, res) => {
     let result = await ChatRequest.find({});
     res.send(result);
@@ -17,4 +17,4 @@ class RequestControler {
   };
 }
 
-module.exports = new RequestControler();
+module.exports = new RequestController();

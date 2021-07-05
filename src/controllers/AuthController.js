@@ -15,7 +15,7 @@ class AuthController {
 
     if (email && password && username) {
       User.create(
-        {id: uuidv4(), password: password, username: username, email: email},
+        {password: password, username: username, email: email},
         function (err, user) {
           if (err) response.sendStatus(500);
           else response.send({
@@ -27,7 +27,7 @@ class AuthController {
         }
       );
     } else if (username) {
-      User.create({id: uuidv4(), username: username, loginKey: uuidv4()}, function (err, user) {
+      User.create({username: username, loginKey: uuidv4()}, function (err, user) {
         if (err) response.sendStatus(500);
         else response.send({
           id: user._id,
