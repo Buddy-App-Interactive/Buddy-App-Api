@@ -11,15 +11,15 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "dotenv": "^8.2.0",
+    "dotenv": "^8.6.0",
     "express": "^4.17.1",
     "express-jwt": "^6.0.0",
     "express-session": "^1.17.2",
     "jsonwebtoken": "^8.5.1",
     "migrate-mongo": "^8.2.2",
-    "mongoose": "^5.12.4",
-    "nodemon": "^2.0.7",
-    "socket.io": "^4.0.1",
+    "mongoose": "^5.13.2",
+    "nodemon": "^2.0.9",
+    "socket.io": "^4.1.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
-const {User} = require('../DbManager.js');
+const { User } = require('../Schemas/index.js');
 
 module.exports = async (req, res, next) => {
-  const decodedTokenData = req.tokenData;
+  const decodedTokenData = req.token.data;
   const userRecord = await User.findOne({_id: decodedTokenData._id});
 
   req.currentUser = userRecord;

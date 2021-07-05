@@ -1,7 +1,9 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
-const {RequestControler, AuthController} = require('./controllers/index.js');
+
+
+const {RequestController, AuthController, ChatController} = require('./controllers/index.js');
 
 const AuthService = require('./services/AuthService.js');
 
@@ -26,9 +28,7 @@ app.use(
 );
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-
-//import {Server} from 'socket.io';
-//const io = new Server(app);
+const http = require('http').Server(app);
 
 const db = initDb();
 
@@ -38,14 +38,56 @@ db.once('open', function () {
   console.log('Connected to DB!');
 });
 
-const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => console.info(`Server has started on ${PORT}`));
-
 app.get('/', (req, res) => {
   res.send('welcome to the buddy app api');
 });
 
-app.get('/requests', RequestControler.fetchRequests);
-app.get('/requests/own', RequestControler.fetchOwnRequests);
+app.get('/requests', RequestController.fetchRequests);
+app.get('/requests/own', RequestController.fetchOwnRequests);
 app.post('/login', AuthController.login);
 app.post('/register', AuthController.register);
+app.get('/chats', isAuth, attachCurrentUser, (req, res) => {
+    return ChatController.fetchChats(req,res)
+})
+app.get('/messages', isAuth, attachCurrentUser, (req, res) => {
+    return ChatController.fetchMessagesForChat(req,res)
+})
+
+global.socketClients =[];
+global.socketConnection = undefined;
+app.post('/message/send', isAuth, attachCurrentUser, (req, res) => {
+    return ChatController.sendMessage(req,res)
+})
+
+
+let io = require('socket.io')(http);
+
+
+io.sockets.on('connection', function (socket) {
+    socketConnection = socket;
+
+    socket.on('storeClientInfo', function (data) {
+        var clientInfo = {};
+        clientInfo.customId = JSON.parse(data).customId;
+        clientInfo.clientId = socket.id;
+        socketClients.push(clientInfo);
+    });
+
+    socket.on('disconnect', function (data) {
+        for( var i=0, len=socketClients.length; i<len; ++i ){
+            var c = socketClients[i];
+            if(c.clientId === socket.id){
+                socketClients.splice(i,1);
+                break;
+            }
+        }
+    });
+
+
+});
+
+
+const PORT = process.env.PORT || 5001;
+http.listen(PORT, function() {
+    console.log(`listening on ${PORT}`);
+});

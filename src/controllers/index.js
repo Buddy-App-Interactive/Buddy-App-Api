@@ -1,4 +1,5 @@
-const RequestControler = require('./RequestController.js');
+const RequestController = require('./RequestController.js');
 const AuthController = require('./AuthController.js');
+const ChatController = require('./ChatController.js');
 
-module.exports = {RequestControler, AuthController};
+module.exports = {RequestController, AuthController, ChatController};
