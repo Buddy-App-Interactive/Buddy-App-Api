@@ -42,6 +42,7 @@ app.get('/', (req, res) => {
 
 app.get('/requests', isAuth, attachCurrentUser, RequestController.fetchRequests);
 app.get('/requests/own', isAuth, attachCurrentUser, RequestController.fetchOwnRequests);
+app.post('/requests', isAuth, attachCurrentUser, RequestController.createRequest);
 app.post('/login', AuthController.login);
 app.post('/register', AuthController.register);
 app.get('/chats', isAuth, attachCurrentUser, (req, res) => {
