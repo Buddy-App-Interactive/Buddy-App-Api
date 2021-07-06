@@ -8,8 +8,8 @@ class ChatController {
         let result = await Chat.find( {$or:[
                 {user_from: currentUser._id}, {user_to: currentUser._id}
                 ]})
-            .populate("user_from", "username")
-            .populate("user_to", "username")
+            .populate("user_from", "username mood")
+            .populate("user_to", "username mood")
 
 
         let map = await Promise.all(result.map( async item => {
@@ -25,10 +25,11 @@ class ChatController {
             container_mesage.senderId = message.sender._id
             container_mesage.created = dateFormat(message.created, "dd/mm/yyyy HH:MM");
 
+            //replace with id compare
             container._id = item._id;
             container.username = item.user_to.username===currentUser.username?
                 item.user_from.username:item.user_from.username;
-            container.mood = item.user_from.mood
+            container.mood = item.user_to.username===currentUser.username?item.user_from.mood:item.user_to.mood
             container.lastMessage = container_mesage
             container.requestId = item.chat_request;
 
