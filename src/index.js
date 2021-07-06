@@ -53,34 +53,21 @@ app.get('/messages', isAuth, attachCurrentUser, (req, res) => {
     return ChatController.fetchMessagesForChat(req,res)
 })
 
-global.socketClients =[];
-global.socketConnection = undefined;
 app.post('/message/send', isAuth, attachCurrentUser, (req, res) => {
     return ChatController.sendMessage(req,res)
 })
 
 
 let io = require('socket.io')(http);
-
+global.socketConnection = io;
 
 io.sockets.on('connection', function (socket) {
-    socketConnection = socket;
 
     socket.on('storeClientInfo', function (data) {
-        var clientInfo = {};
-        clientInfo.customId = JSON.parse(data).customId;
-        clientInfo.clientId = socket.id;
-        socketClients.push(clientInfo);
+        socket.join(JSON.parse(data).customId)
     });
 
     socket.on('disconnect', function (data) {
-        for( var i=0, len=socketClients.length; i<len; ++i ){
-            var c = socketClients[i];
-            if(c.clientId === socket.id){
-                socketClients.splice(i,1);
-                break;
-            }
-        }
     });
 
 
