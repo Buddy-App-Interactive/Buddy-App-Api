@@ -65,16 +65,23 @@ class ChatController {
             chat: chatId,
             created: Date.now()})
 
+
+        const container = {};
+        container._id = result._id;
+        container.username = currentUser.username;
+        container.content = result.content.toString();
+        container.chatId = req.headers.chat_id;
+        container.senderId = result.sender._id
+
         let chat = await Chat.findOne({_id: chatId})
-            .populate("user_from")
-            .populate("user_to")
+        let id = (chat.user_to.toString() === currentUser._id.toString()
+            ?chat.user_from.toString()
+            :chat.user_to.toString());
 
-        let user=socketClients.find(x => x.customId === (chat.user_from._id!==currentUser?chat.user_from._id:chat.user_to._id))
-        if(user)
-            socketConnection.to(user.clientId).emit("NEW_MESSAGE", result)
-        console.log(socketClients)
+            socketConnection.to(id)
+            .emit("NEW_MESSAGE", container)
 
-        res.send(result);
+        res.send(container);
     }
 }
 
