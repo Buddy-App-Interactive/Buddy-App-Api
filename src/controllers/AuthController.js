@@ -2,6 +2,8 @@ const {v4: uuidv4} = require('uuid');
 
 const { User } = require('../Schemas/index.js');
 const AuthService = require('../services/AuthService.js');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 class AuthController {
   fetchRequests = function (req, res) {};
@@ -10,7 +12,7 @@ class AuthController {
 
   register(request, response) {
     var email = request.body.email;
-    var password = request.body.password;
+    var password = bcrypt.hashSync(request.body.password, saltRounds);
     var username = request.body.username;
 
     if (email && password && username) {
@@ -46,12 +48,14 @@ class AuthController {
 
   login(request, response) {
     var email = request.body.email;
-    var password = request.body.password;
     var loginKey = request.body.loginKey;
+    var password = request.body.password
 
     if (email && password) {
-      User.findOne({email: email, password: password}, function (err, user) {
-        if (user) {
+      User.findOne({email: email}, function (err, user) {
+        if(!bcrypt.compareSync(request.body.password, user.password))
+          response.sendStatus(404)
+        else if (user) {
           request.session.loggedin = true;
           request.session.email = email;
           request.session.username = user.username;
