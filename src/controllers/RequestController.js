@@ -13,7 +13,7 @@ class RequestController {
   };
 
   createRequest = async (req, res) => {
-    let chatRequest = req.body;
+    let chatRequest = JSON.parse(req.body.request);
     let result = await ChatRequest.create(chatRequest);
     return res.send(result);
   };
