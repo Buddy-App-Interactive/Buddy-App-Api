@@ -8,7 +8,7 @@ const user = new Schema({
   password: {type: String, default: null},
   username: {type: String, default: null},
   loginKey: {type: String, default: null},
-  mood: {type: Number, default: 1}
+  mood: {type: Number, default: 3}
 });
 
 module.exports = mongoose.model('User', user);
