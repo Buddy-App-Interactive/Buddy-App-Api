@@ -25,11 +25,13 @@ class ChatController {
             container_mesage.senderId = message.sender._id
             container_mesage.created = dateFormat(message.created, "dd/mm/yyyy HH:MM");
 
-            //replace with id compare
             container._id = item._id;
-            container.username = item.user_to.username===currentUser.username?
-                item.user_from.username:item.user_from.username;
-            container.mood = item.user_to.username===currentUser.username?item.user_from.mood:item.user_to.mood
+            container.username = (item.user_to._id.toString() === currentUser._id.toString()
+                ?item.user_from.username
+                :item.user_to.username);
+            container.mood = (item.user_to._id.toString() === currentUser._id.toString()
+                ?item.user_from.mood
+                :item.user_to.mood);
             container.lastMessage = container_mesage
             container.requestId = item.chat_request;
 

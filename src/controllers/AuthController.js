@@ -23,6 +23,7 @@ class AuthController {
             email: user.email,
             username: user.username,
             jwt: AuthService.generateToken(user),
+            mood: user.mood
           });
         }
       );
@@ -34,6 +35,7 @@ class AuthController {
           loginKey: user.loginKey,
           username: user.username,
           jwt: AuthService.generateToken(user),
+          mood: user.mood
         });
       });
     } else {
@@ -59,6 +61,7 @@ class AuthController {
             email: user.email,
             username: user.username,
             jwt: AuthService.generateToken(user),
+            mood: user.mood
           });
         } else {
           response.sendStatus(404);
@@ -77,6 +80,7 @@ class AuthController {
             loginKey: user.loginKey,
             username: user.username,
             jwt: AuthService.generateToken(user),
+            mood: user.mood
           });
         } else {
           response.sendStatus(404);
