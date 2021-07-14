@@ -48,6 +48,7 @@ app.post('/user', isAuth, attachCurrentUser, UserController.updateUser);
 app.post('/password', isAuth, attachCurrentUser, UserController.updateUserPassword);
 app.post('/login', AuthController.login);
 app.post('/register', AuthController.register);
+app.post('/chats', isAuth, attachCurrentUser, ChatController.createChat);
 app.get('/chats', isAuth, attachCurrentUser, (req, res) => {
   return ChatController.fetchChats(req, res);
 });

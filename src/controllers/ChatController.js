@@ -8,8 +8,8 @@ class ChatController {
         let result = await Chat.find( {$or:[
                 {user_from: currentUser._id}, {user_to: currentUser._id}
                 ]})
-            .populate("user_from", "username mood")
-            .populate("user_to", "username mood")
+            .populate("user_from", "_id username mood")
+            .populate("user_to", "_id username mood")
 
 
         let map = await Promise.all(result.map( async item => {
@@ -18,12 +18,13 @@ class ChatController {
             let message = await Message.findOne({chat: item._id}).sort('-created')
                 .populate([{path:'sender', select:'username _id'}])
             let container_mesage = {}
-            container_mesage._id = message._id;
-            container_mesage.username = message.sender.username;
-            container_mesage.content = message.content.toString();
-            container_mesage.chatId = message.chat;
-            container_mesage.senderId = message.sender._id
-            container_mesage.created = dateFormat(message.created, "dd/mm/yyyy HH:MM");
+
+            container_mesage._id = message?message._id:ObjectId();
+            container_mesage.username = message?message.sender.username:"";
+            container_mesage.content = message?message.content.toString():Buffer.from("No message sent yet..",'utf-8').toString();
+            container_mesage.chatId = message?message.chat:item._id;
+            container_mesage.senderId = message?message.sender._id:ObjectId();
+            container_mesage.created = message?dateFormat(message.created, "dd/mm/yyyy HH:MM"):dateFormat(Date.now(), "dd/mm/yyyy HH:MM");
 
             container._id = item._id;
             container.username = (item.user_to._id.toString() === currentUser._id.toString()
@@ -42,12 +43,32 @@ class ChatController {
     };
 
     createChat = async (req, res) => {
-        let requestId = req.body.requestId;
-        let userFromId = req.body.userFromId;
-        let userToId = req.body.userToId;
+        let { currentUser } = req;
+        let requestId = req.headers.requestid;
+        console.log(req.headers.creatorid)
+        let requestCreatorId = ObjectId(req.headers.creatorid);
 
-        let result = await Chat.create({chat_request: requestId, user_from: userFromId, user_to: userToId})
-        res.send(result);
+        let result = (await Chat.create({
+            chat_request: requestId,
+            user_from: currentUser._id,
+            user_to: requestCreatorId.toString()
+        }))
+        result = await Chat.findOne({
+            _id:result._id
+        })
+            .populate("user_from", "username mood")
+            .populate("user_to", "username mood")
+        let container = {}
+        container._id = result._id;
+        container.username = (result.user_to.toString() === currentUser._id.toString()
+            ?result.user_from.username
+            :result.user_to.username);
+        container.mood = (result.user_to._id.toString() === currentUser._id.toString()
+            ?result.user_from.mood
+            :result.user_to.mood);
+        container.lastMessage = null
+        container.requestId = result.chat_request;
+        res.send(container);
     };
 
     fetchMessagesForChat = async (req, res) => {
