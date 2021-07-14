@@ -9,7 +9,7 @@ let requestType = {
 };
 
 const chatRequest = new Schema({
-  id_creator: {type: String},
+  creator: { type: Schema.Types.ObjectId, ref: 'User' },
   description: {type: String, default: null},
   type: {type: requestType, default: null},
   endDate: {type: Date, default: null},
