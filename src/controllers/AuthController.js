@@ -12,7 +12,8 @@ class AuthController {
 
   register(request, response) {
     var email = request.body.email;
-    var password = bcrypt.hashSync(request.body.password, saltRounds);
+    if(password)
+      var password = bcrypt.hashSync(request.body.password, saltRounds);
     var username = request.body.username;
 
     if (email && password && username) {
@@ -53,7 +54,7 @@ class AuthController {
 
     if (email && password) {
       User.findOne({email: email}, function (err, user) {
-        if(!bcrypt.compareSync(request.body.password, user.password))
+        if(user && !bcrypt.compareSync(request.body.password, user.password))
           response.sendStatus(404)
         else if (user) {
           request.session.loggedin = true;

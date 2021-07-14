@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
-const {RequestController, AuthController, ChatController, MoodController} = require('./controllers/index.js');
+const {RequestController, AuthController, ChatController, UserController} = require('./controllers/index.js');
 
 const AuthService = require('./services/AuthService.js');
 
@@ -43,7 +43,9 @@ app.get('/', (req, res) => {
 app.get('/requests', isAuth, attachCurrentUser, RequestController.fetchRequests);
 app.get('/requests/own', isAuth, attachCurrentUser, RequestController.fetchOwnRequests);
 app.post('/requests', isAuth, attachCurrentUser, RequestController.createRequest);
-app.post('/moods', isAuth, attachCurrentUser, MoodController.updateMood);
+app.post('/moods', isAuth, attachCurrentUser, UserController.updateMood);
+app.post('/user', isAuth, attachCurrentUser, UserController.updateUser);
+app.post('/password', isAuth, attachCurrentUser, UserController.updateUserPassword);
 app.post('/login', AuthController.login);
 app.post('/register', AuthController.register);
 app.get('/chats', isAuth, attachCurrentUser, (req, res) => {
