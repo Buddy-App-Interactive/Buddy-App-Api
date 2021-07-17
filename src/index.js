@@ -1,7 +1,12 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
-const {RequestController, AuthController, ChatController, UserController} = require('./controllers/index.js');
+const {
+  RequestController,
+  AuthController,
+  ChatController,
+  UserController,
+} = require('./controllers/index.js');
 
 const AuthService = require('./services/AuthService.js');
 
@@ -55,8 +60,9 @@ app.get('/chats', isAuth, attachCurrentUser, (req, res) => {
 app.get('/messages', isAuth, attachCurrentUser, (req, res) => {
   return ChatController.fetchMessagesForChat(req, res);
 });
-
-
+app.get('/chats/karma', isAuth, attachCurrentUser, (req, res) => {
+  return ChatController.fetchKarma(req, res);
+});
 app.post('/message/send', isAuth, attachCurrentUser, (req, res) => {
   return ChatController.sendMessage(req, res);
 });
@@ -66,14 +72,11 @@ let io = require('socket.io')(http);
 global.socketConnection = io;
 
 io.sockets.on('connection', function (socket) {
+  socket.on('storeClientInfo', function (data) {
+    socket.join(JSON.parse(data).customId);
+  });
 
-    socket.on('storeClientInfo', function (data) {
-        socket.join(JSON.parse(data).customId)
-    });
-
-    socket.on('disconnect', function (data) {
-    });
-
+  socket.on('disconnect', function (data) {});
 });
 
 const PORT = process.env.PORT || 5001;
