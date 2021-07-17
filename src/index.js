@@ -48,6 +48,7 @@ app.get('/', (req, res) => {
 app.get('/requests', isAuth, attachCurrentUser, RequestController.fetchRequests);
 app.get('/requests/own', isAuth, attachCurrentUser, RequestController.fetchOwnRequests);
 app.post('/requests', isAuth, attachCurrentUser, RequestController.createRequest);
+app.put('/requests', isAuth, attachCurrentUser, RequestController.updateRequest);
 app.post('/moods', isAuth, attachCurrentUser, UserController.updateMood);
 app.post('/user', isAuth, attachCurrentUser, UserController.updateUser);
 app.post('/password', isAuth, attachCurrentUser, UserController.updateUserPassword);
