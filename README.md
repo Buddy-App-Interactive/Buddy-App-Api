@@ -1,8 +1,6 @@
 # Buddy-App-Api
 
 Api for the budy app mobile app.
-This project is being done in the course of Interactive Systems II at the AAU Klagenfurt in the summer semester 2021.
-The project is work in progress and is not fully functional yet.
 
 ## Technology used:
 <ul>
@@ -10,6 +8,10 @@ The project is work in progress and is not fully functional yet.
   <li>express - for endpoint routing</li>
   <li>socket.io - for chat communication</li>
   <li>mongodb - as the database system</li>
+  <li>mongoose - for Schemas </li>
+  <li>JWT - Token for Route Authorisation </li>
+  <li>bcrypt - For Password Hashing and Salting </li>
+  <lidotenv - for environmentfile support </li>
   <li>migrate-mongo - to manage migrations for mongodb</li>
 </ul>
 
